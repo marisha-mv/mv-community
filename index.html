@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliza - Mindvalley Community Bot</title>
+    <title>Mindvalley Community Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,7 +23,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
             padding: 20px;
         }
 
@@ -37,7 +37,7 @@
             border-radius: 24px;
             padding: 48px;
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
         }
 
         .logo {
@@ -55,7 +55,7 @@
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: #1F2937;
             margin-bottom: 12px;
@@ -63,7 +63,7 @@
 
         .subtitle {
             color: #6B7280;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             margin-bottom: 40px;
             line-height: 1.6;
         }
@@ -85,6 +85,11 @@
 
         .link-card.primary {
             background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            color: white;
+        }
+
+        .link-card.demo {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             color: white;
         }
 
@@ -129,10 +134,25 @@
             color: white;
         }
 
+        .divider {
+            height: 1px;
+            background: #E5E7EB;
+            margin: 24px 0;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9CA3AF;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
         footer {
             text-align: center;
             margin-top: 32px;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.6);
             font-size: 0.9rem;
         }
     </style>
@@ -140,71 +160,58 @@
 <body>
     <div class="container">
         <div class="card">
-            <div class="logo">E</div>
-            <h1>Meet Eliza</h1>
-            <p class="subtitle">AI-powered community companion for Mindvalley Quests — supportive, empowering, celebrating.</p>
+            <div class="logo">M</div>
+            <h1>Community Platform</h1>
+            <p class="subtitle">AI-native transformation community where completion drives connection.</p>
 
             <div class="links">
-                <a href="demo/index.html" class="link-card primary" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                <a href="vision.html" class="link-card primary">
                     <h3>
-                        Interactive Demo
-                        <span class="badge">Try It Now</span>
+                        Product Vision
+                        <span class="badge">Start Here</span>
                     </h3>
-                    <p>Working prototype of the community platform. Click around — check in, give kudos, explore the feed.</p>
+                    <p>The complete vision: why we're building this, how it works, and what makes it different.</p>
                 </a>
 
-                <a href="demo/proposal.html" class="link-card primary">
+                <a href="demo/index.html" class="link-card demo">
                     <h3>
-                        Platform Proposal
-                        <span class="badge">Strava Model</span>
+                        Interactive Demo
+                        <span class="badge">Try It</span>
                     </h3>
-                    <p>The case for activity-first community: completion drives connection, not the other way around.</p>
+                    <p>Working prototype — click around, check in, give kudos, explore the feed.</p>
                 </a>
+
+                <div class="divider"></div>
+                <div class="section-label">Supporting Documents</div>
 
                 <a href="Eliza_Platform_Vision.html" class="link-card secondary">
                     <h3>
-                        Full Platform Vision
-                        <span class="badge">Architecture</span>
+                        Technical Architecture
+                        <span class="badge">Deep Dive</span>
                     </h3>
-                    <p>What if Eliza WAS the platform? An AI-native community where Eliza is the foundation — not an add-on.</p>
-                </a>
-
-                <a href="Eliza_Proposal.html" class="link-card secondary">
-                    <h3>
-                        Circle.so Option
-                        <span class="badge">Phase 1</span>
-                    </h3>
-                    <p>Deploy Eliza on Circle.so first. Complete strategy with personality guide, daily plan, and technical options.</p>
+                    <p>Platform architecture, AI layer, data models, and build specifications.</p>
                 </a>
 
                 <a href="Eliza_Community_Simulation.html" class="link-card secondary">
                     <h3>
-                        Day-by-Day Simulation
-                        <span class="badge">28 Days</span>
+                        28-Day Journey
+                        <span class="badge">Simulation</span>
                     </h3>
-                    <p>See how Eliza engages members across the full quest journey — Days 1, 3, 7, 10, 20, and 28.</p>
+                    <p>Day-by-day walkthrough of how Eliza engages members across a full quest.</p>
                 </a>
 
                 <a href="Eliza_Completion_Model.html" class="link-card secondary">
                     <h3>
                         Completion Model
-                        <span class="badge">Key Insight</span>
+                        <span class="badge">Research</span>
                     </h3>
-                    <p>People don't want to connect about quests. So how do we drive completion? Social proof, accountability, opt-in depth.</p>
-                </a>
-
-                <a href="Eliza_Strava_Model.html" class="link-card secondary" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%); border: 1px solid #F97316;">
-                    <h3 style="color: #EA580C;">
-                        Strava for Personal Development
-                        <span class="badge" style="background: #F97316;">New Model</span>
-                    </h3>
-                    <p style="color: #9A3412;">Not WhatsApp. Not forums. A public activity feed with kudos, leaderboards, and discovery — Strava mechanics for transformation.</p>
+                    <p>The insight that changed everything: completion over connection.</p>
                 </a>
             </div>
         </div>
 
         <footer>
-            Eliza Community Bot Proposal — Mindvalley 2025
+            Mindvalley Community Platform — 2025
         </footer>
     </div>
 </body>
