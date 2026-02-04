@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Strava for Mindvalley - The Eliza Model</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --secondary: #EC4899;
+            --orange: #F97316;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --light: #F1F5F9;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+            color: white;
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Comparison */
+        .comparison-section {
+            background: var(--white);
+            padding: 60px 24px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .phone-frame {
+                transform: scale(0.9);
+            }
+        }
+
+        .comparison-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .comparison-card.highlight {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+            border: 2px solid var(--orange);
+        }
+
+        .comparison-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .comparison-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .comparison-card li {
+            padding: 6px 0;
+        }
+
+        .x { color: #EF4444; }
+        .check { color: #10B981; }
+
+        /* Phone Mockup */
+        .phone-section {
+            padding: 60px 24px;
+            background: var(--dark);
+        }
+
+        .phone-section h2 {
+            color: white;
+        }
+
+        .phone-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .phone-frame {
+            width: 320px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .phone-screen {
+            background: var(--white);
+            border-radius: 32px;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .phone-header {
+            background: linear-gradient(135deg, var(--orange) 0%, #EA580C 100%);
+            color: white;
+            padding: 48px 20px 20px;
+        }
+
+        .phone-header h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .phone-header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .phone-tabs {
+            display: flex;
+            background: var(--light);
+            padding: 8px;
+        }
+
+        .phone-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--gray);
+            border-radius: 8px;
+        }
+
+        .phone-tab.active {
+            background: white;
+            color: var(--orange);
+        }
+
+        .phone-content {
+            padding: 16px;
+        }
+
+        /* Activity Items */
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .activity-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .activity-action {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .activity-stat {
+            font-size: 0.8rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kudos-btn {
+            background: var(--light);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .kudos-btn.given {
+            background: linear-gradient(135deg, var(--orange) 0%, #EA580C 100%);
+            color: white;
+        }
+
+        /* Leaderboard */
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .rank.gold { background: #FCD34D; color: #92400E; }
+        .rank.silver { background: #E5E7EB; color: #374151; }
+        .rank.bronze { background: #FBBF24; color: #92400E; }
+        .rank.normal { background: var(--light); color: var(--gray); }
+
+        .lb-name {
+            flex: 1;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .lb-stat {
+            font-size: 0.85rem;
+            color: var(--orange);
+            font-weight: 600;
+        }
+
+        /* Discover */
+        .discover-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .discover-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .discover-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .discover-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .discover-meta {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .discover-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .discover-tag {
+            background: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .follow-btn {
+            background: var(--orange);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        /* Features */
+        .features-section {
+            padding: 60px 24px;
+            background: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .feature-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--orange) 0%, #EA580C 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Eliza Section */
+        .eliza-section {
+            padding: 60px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .eliza-section h2 {
+            color: white;
+        }
+
+        .eliza-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .eliza-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .eliza-card h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .eliza-card p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Why Not WhatsApp */
+        .whatsapp-section {
+            padding: 60px 24px;
+            background: var(--dark);
+            color: white;
+        }
+
+        .whatsapp-section h2 {
+            color: white;
+        }
+
+        .whatsapp-table {
+            width: 100%;
+            margin-top: 32px;
+            border-collapse: collapse;
+        }
+
+        .whatsapp-table th, .whatsapp-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .whatsapp-table th {
+            color: rgba(255,255,255,0.6);
+            font-weight: 500;
+        }
+
+        .whatsapp-table td {
+            color: white;
+        }
+
+        /* Nav */
+        .nav-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--gray);
+            background: var(--white);
+        }
+
+        /* Live indicator */
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #10B981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .practicing-now {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            color: #059669;
+        }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="nav-back">← Back</a>
+
+<!-- Hero -->
+<header class="hero">
+    <h1>Strava for Personal Development</h1>
+    <p>Not WhatsApp. Not forums. A public activity feed where students see each other practicing, hit milestones, and discover connections — transforming growth from a solo journey into a shared movement.</p>
+</header>
+
+<!-- Comparison -->
+<section class="comparison-section">
+    <div class="container">
+        <h2>Why Strava, Not WhatsApp?</h2>
+
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <div class="icon">💬</div>
+                <h3>WhatsApp/Chat</h3>
+                <ul>
+                    <li><span class="x">✗</span> Private, 1-1 only</li>
+                    <li><span class="x">✗</span> No discovery of others</li>
+                    <li><span class="x">✗</span> No public accountability</li>
+                    <li><span class="x">✗</span> Groups get noisy/overwhelming</li>
+                    <li><span class="x">✗</span> Can't see activity at a glance</li>
+                    <li><span class="check">✓</span> Familiar, low friction</li>
+                </ul>
+            </div>
+
+            <div class="comparison-card">
+                <div class="icon">📋</div>
+                <h3>Forums/Circle</h3>
+                <ul>
+                    <li><span class="x">✗</span> Intimidating to post</li>
+                    <li><span class="x">✗</span> Discussion-heavy</li>
+                    <li><span class="x">✗</span> Another platform to check</li>
+                    <li><span class="x">✗</span> Posts feel permanent/public</li>
+                    <li><span class="check">✓</span> Community visibility</li>
+                    <li><span class="check">✓</span> Searchable content</li>
+                </ul>
+            </div>
+
+            <div class="comparison-card highlight">
+                <div class="icon">🏃</div>
+                <h3>Strava Model</h3>
+                <ul>
+                    <li><span class="check">✓</span> Public activity feed</li>
+                    <li><span class="check">✓</span> See others without talking</li>
+                    <li><span class="check">✓</span> Lightweight interactions (kudos)</li>
+                    <li><span class="check">✓</span> Discovery built-in</li>
+                    <li><span class="check">✓</span> Leaderboards & competition</li>
+                    <li><span class="check">✓</span> Follow people you resonate with</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Phone Mockups -->
+<section class="phone-section">
+    <div class="container">
+        <h2>What It Looks Like</h2>
+
+        <div class="phone-container">
+            <!-- Feed Phone -->
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <div class="phone-header">
+                        <h4>Silva UltraMind</h4>
+                        <p>Day 10 • Week 2</p>
+                    </div>
+                    <div class="phone-tabs">
+                        <div class="phone-tab active">Feed</div>
+                        <div class="phone-tab">Leaderboard</div>
+                        <div class="phone-tab">Discover</div>
+                    </div>
+                    <div class="phone-content">
+                        <div class="practicing-now">
+                            <span class="live-dot"></span>
+                            <strong>23 people</strong> practicing right now
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-avatar">SR</div>
+                            <div class="activity-content">
+                                <div class="activity-name">Sarah Rodriguez</div>
+                                <div class="activity-action">Completed Day 10: Three Scenes Technique ✨</div>
+                                <div class="activity-time">12 minutes ago</div>
+                                <div class="activity-meta">
+                                    <span class="activity-stat">🔥 14 day streak</span>
+                                    <button class="kudos-btn given">👏 Give Kudos</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">MK</div>
+                            <div class="activity-content">
+                                <div class="activity-name">Marcus Kim</div>
+                                <div class="activity-action">Hit a 21-day streak! 🎉</div>
+                                <div class="activity-time">34 minutes ago</div>
+                                <div class="activity-meta">
+                                    <span class="activity-stat">💜 28 kudos</span>
+                                    <button class="kudos-btn">👏 12</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);">E</div>
+                            <div class="activity-content">
+                                <div class="activity-name">Eliza</div>
+                                <div class="activity-action">Day 10 insight: The Three Scenes Technique is about ending on the SOLUTION. What did you visualize in Scene 3 today?</div>
+                                <div class="activity-time">1 hour ago</div>
+                                <div class="activity-meta">
+                                    <span class="activity-stat">💬 47 replies</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);">JP</div>
+                            <div class="activity-content">
+                                <div class="activity-name">Jeanne Peters</div>
+                                <div class="activity-action">Morning practice done ☀️</div>
+                                <div class="activity-time">2 hours ago</div>
+                                <div class="activity-meta">
+                                    <button class="kudos-btn">👏 8</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Phone -->
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <div class="phone-header">
+                        <h4>Leaderboard</h4>
+                        <p>This Week</p>
+                    </div>
+                    <div class="phone-tabs">
+                        <div class="phone-tab">Feed</div>
+                        <div class="phone-tab active">Leaderboard</div>
+                        <div class="phone-tab">Discover</div>
+                    </div>
+                    <div class="phone-content">
+                        <div style="font-size: 0.85rem; color: var(--gray); margin-bottom: 16px;">
+                            <strong>Longest Streaks</strong>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <div class="rank gold">1</div>
+                            <div class="activity-avatar" style="width: 36px; height: 36px; font-size: 0.8rem;">MK</div>
+                            <div class="lb-name">Marcus Kim</div>
+                            <div class="lb-stat">21 days 🔥</div>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <div class="rank silver">2</div>
+                            <div class="activity-avatar" style="width: 36px; height: 36px; font-size: 0.8rem; background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);">LM</div>
+                            <div class="lb-name">Lisa Martinez</div>
+                            <div class="lb-stat">19 days 🔥</div>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <div class="rank bronze">3</div>
+                            <div class="activity-avatar" style="width: 36px; height: 36px; font-size: 0.8rem; background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);">TK</div>
+                            <div class="lb-name">Thomas Kim</div>
+                            <div class="lb-stat">17 days 🔥</div>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <div class="rank normal">4</div>
+                            <div class="activity-avatar" style="width: 36px; height: 36px; font-size: 0.8rem;">SR</div>
+                            <div class="lb-name">Sarah Rodriguez</div>
+                            <div class="lb-stat">14 days 🔥</div>
+                        </div>
+
+                        <div class="leaderboard-item" style="background: rgba(249, 115, 22, 0.1); margin: 0 -16px; padding: 12px 16px;">
+                            <div class="rank normal" style="background: var(--orange); color: white;">47</div>
+                            <div class="activity-avatar" style="width: 36px; height: 36px; font-size: 0.8rem; background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);">You</div>
+                            <div class="lb-name"><strong>You</strong></div>
+                            <div class="lb-stat">7 days 🔥</div>
+                        </div>
+
+                        <div style="font-size: 0.85rem; color: var(--gray); margin: 24px 0 16px;">
+                            <strong>Most Kudos Given</strong>
+                        </div>
+
+                        <div class="leaderboard-item">
+                            <div class="rank gold">1</div>
+                            <div class="activity-avatar" style="width: 36px; height: 36px; font-size: 0.8rem; background: linear-gradient(135deg, #10B981 0%, #059669 100%);">RJ</div>
+                            <div class="lb-name">Rachel Jones</div>
+                            <div class="lb-stat">142 👏</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discover Phone -->
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <div class="phone-header">
+                        <h4>Discover</h4>
+                        <p>Find your people</p>
+                    </div>
+                    <div class="phone-tabs">
+                        <div class="phone-tab">Feed</div>
+                        <div class="phone-tab">Leaderboard</div>
+                        <div class="phone-tab active">Discover</div>
+                    </div>
+                    <div class="phone-content">
+                        <div style="font-size: 0.85rem; color: var(--gray); margin-bottom: 12px;">
+                            <strong>Suggested for you</strong>
+                        </div>
+
+                        <div class="discover-card">
+                            <div class="discover-header">
+                                <div class="discover-avatar">EP</div>
+                                <div>
+                                    <div class="discover-name">Edgar Patel</div>
+                                    <div class="discover-meta">Day 12 • Career focus</div>
+                                </div>
+                                <button class="follow-btn">Follow</button>
+                            </div>
+                            <div class="discover-tags">
+                                <span class="discover-tag">🎯 Same goals as you</span>
+                                <span class="discover-tag">📍 Sydney</span>
+                            </div>
+                        </div>
+
+                        <div class="discover-card">
+                            <div class="discover-header">
+                                <div class="discover-avatar" style="background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);">PS</div>
+                                <div>
+                                    <div class="discover-name">Priya Sharma</div>
+                                    <div class="discover-meta">Day 10 • Like you!</div>
+                                </div>
+                                <button class="follow-btn">Follow</button>
+                            </div>
+                            <div class="discover-tags">
+                                <span class="discover-tag">📅 Same day as you</span>
+                                <span class="discover-tag">⏰ Morning person</span>
+                            </div>
+                        </div>
+
+                        <div style="font-size: 0.85rem; color: var(--gray); margin: 20px 0 12px;">
+                            <strong>Near you (Melbourne)</strong>
+                        </div>
+
+                        <div class="discover-card">
+                            <div class="discover-header">
+                                <div class="discover-avatar" style="background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);">JW</div>
+                                <div>
+                                    <div class="discover-name">James Wong</div>
+                                    <div class="discover-meta">Day 18 • 14-day streak</div>
+                                </div>
+                                <button class="follow-btn">Follow</button>
+                            </div>
+                            <div class="discover-tags">
+                                <span class="discover-tag">📍 12km away</span>
+                                <span class="discover-tag">☕ Open to meetup</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features-section">
+    <div class="container">
+        <h2>The Strava Mechanics</h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📍</div>
+                <h3>Activity Feed</h3>
+                <p>See when people complete lessons, hit streaks, or reach milestones. Public by default, no posting required — just do the work and it shows up.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">👏</div>
+                <h3>Kudos</h3>
+                <p>One-tap encouragement. No need to comment. Just acknowledge someone's progress. Low effort, high social proof.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>Leaderboards</h3>
+                <p>Longest streaks, most consistent, most supportive (kudos given). Competition motivates without requiring conversation.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Follow System</h3>
+                <p>Follow people you resonate with. See their activity in your feed. Build a personal support network without group dynamics.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Discovery</h3>
+                <p>Find people by: same day, similar goals, same timezone, nearby location. Eliza suggests matches based on compatibility.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🟢</div>
+                <h3>Live Presence</h3>
+                <p>"23 people practicing right now" — see who's active. Optional: practice "together" in real-time silence.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Eliza's Role -->
+<section class="eliza-section">
+    <div class="container">
+        <h2>Where Eliza Fits In</h2>
+
+        <div class="eliza-grid">
+            <div class="eliza-card">
+                <h4>Feed Curator</h4>
+                <p>Eliza highlights interesting activity: "Marcus just hit 21 days — that's top 5% of all time!"</p>
+            </div>
+            <div class="eliza-card">
+                <h4>Daily Prompts</h4>
+                <p>Posts reflection questions in the feed. Members can reply or just read others' responses.</p>
+            </div>
+            <div class="eliza-card">
+                <h4>Connection Suggester</h4>
+                <p>"You and Priya are both on Day 10 with career goals. Want me to introduce you?"</p>
+            </div>
+            <div class="eliza-card">
+                <h4>Milestone Celebrator</h4>
+                <p>Public shoutouts: "Sarah just completed Week 2! 🎉" — everyone sees, kudos pour in.</p>
+            </div>
+            <div class="eliza-card">
+                <h4>Private Coach</h4>
+                <p>1-1 chat still exists for personal questions, struggles, deep reflection. Public feed + private support.</p>
+            </div>
+            <div class="eliza-card">
+                <h4>Matchmaker</h4>
+                <p>When someone WANTS connection, Eliza facilitates. "Ready for a pod? I found 4 others who match your vibe."</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Not WhatsApp -->
+<section class="whatsapp-section">
+    <div class="container">
+        <h2>The WhatsApp Problem</h2>
+
+        <table class="whatsapp-table">
+            <tr>
+                <th>Need</th>
+                <th>WhatsApp</th>
+                <th>Strava Model</th>
+            </tr>
+            <tr>
+                <td>Discovery</td>
+                <td>❌ Can't find new people</td>
+                <td>✅ Built-in discovery</td>
+            </tr>
+            <tr>
+                <td>Public accountability</td>
+                <td>❌ Private chats only</td>
+                <td>✅ Everyone sees your streak</td>
+            </tr>
+            <tr>
+                <td>Social proof</td>
+                <td>❌ Can't see others' progress</td>
+                <td>✅ "847 completed today"</td>
+            </tr>
+            <tr>
+                <td>Low-effort engagement</td>
+                <td>❌ Must type a message</td>
+                <td>✅ One-tap kudos</td>
+            </tr>
+            <tr>
+                <td>Noise management</td>
+                <td>❌ Groups get overwhelming</td>
+                <td>✅ Follow who you want</td>
+            </tr>
+            <tr>
+                <td>Eliza integration</td>
+                <td>⚠️ Possible but limited</td>
+                <td>✅ Native, everywhere</td>
+            </tr>
+            <tr>
+                <td>Data ownership</td>
+                <td>❌ Meta owns everything</td>
+                <td>✅ Mindvalley owns it</td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 40px; padding: 24px; background: rgba(255,255,255,0.05); border-radius: 16px;">
+            <h3 style="color: white; margin-bottom: 12px;">The Real Issue with WhatsApp</h3>
+            <p style="color: rgba(255,255,255,0.8);">
+                WhatsApp is great for 1-1 with Eliza. But it doesn't solve the PUBLIC layer — seeing others, being seen, discovery, competition. You need BOTH: private Eliza chat AND public activity feed.
+            </p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    AI Strava Model — Mindvalley 2025
+</footer>
+
+</body>
+</html>
