@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Community Tab</title>
+    <title>Community</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -15,25 +15,31 @@
 
         :root {
             --bg: #FFFFFF;
-            --surface: #F5F5F7;
-            --surface-2: #EBEBED;
-            --text: #1A1A1A;
-            --text-secondary: #666666;
-            --text-tertiary: #999999;
+            --surface: #F8F9FA;
+            --surface-glass: rgba(255,255,255,0.8);
+            --text: #0D0D0D;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
             --accent: #8B5CF6;
-            --accent-dark: #7C3AED;
+            --accent-light: #A78BFA;
             --pink: #EC4899;
             --green: #10B981;
             --orange: #F59E0B;
             --blue: #3B82F6;
-            --border: rgba(0,0,0,0.08);
+            --border: rgba(0,0,0,0.06);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
+            --gradient-purple: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+            --gradient-green: linear-gradient(135deg, #10B981 0%, #06D6A0 100%);
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
+            background: #F5F5F7;
             color: var(--text);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .app {
@@ -42,396 +48,452 @@
             min-height: 100vh;
             background: var(--bg);
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* App Header - mimics Mindvalley app */
-        .app-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 20px;
+        /* Header */
+        .header {
+            padding: 16px 20px;
             background: var(--bg);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-            overflow: hidden;
-        }
-
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .header-icons {
+        .header-top {
             display: flex;
-            gap: 20px;
-        }
-
-        .header-icon {
-            width: 24px;
-            height: 24px;
-            color: var(--text);
-        }
-
-        /* Main Tabs - Networks, Events, People */
-        .main-tabs {
-            display: flex;
-            gap: 24px;
-            padding: 0 20px;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
-            position: sticky;
-            top: 64px;
-            z-index: 99;
-        }
-
-        .main-tab {
-            padding: 12px 0;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .main-tab.active {
-            color: var(--text);
-            border-bottom-color: var(--text);
-        }
-
-        /* Content */
-        .content {
-            padding-bottom: 90px;
-        }
-
-        /* Your Networks Section */
-        .section {
-            padding: 20px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text);
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
-        .see-all {
-            font-size: 14px;
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-
-        /* Network Cards - Horizontal Scroll */
-        .networks-scroll {
+        .header-actions {
             display: flex;
             gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin: 0 -20px;
-            padding-left: 20px;
-            padding-right: 20px;
-            -webkit-overflow-scrolling: touch;
         }
 
-        .networks-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .network-card {
-            flex-shrink: 0;
-            width: 280px;
-            border-radius: 16px;
-            overflow: hidden;
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             background: var(--surface);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .network-card:active {
-            transform: scale(0.98);
-        }
-
-        .network-card.active {
-            border: 2px solid var(--accent);
-        }
-
-        .network-image {
-            width: 100%;
-            height: 150px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-        }
-
-        .network-image.silva {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-        }
-
-        .network-image.lifebook {
-            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
-        }
-
-        .network-image-text {
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .network-image-text h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .network-image-text span {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .network-info {
-            padding: 14px 16px;
-        }
-
-        .network-name {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .network-stats {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: var(--orange);
-        }
-
-        .network-stats svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        /* Activity Feed Section (shown when network is selected) */
-        .feed-section {
-            padding: 0;
-        }
-
-        .feed-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .feed-title {
-            font-size: 17px;
-            font-weight: 600;
-        }
-
-        .feed-subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .feed-tabs {
-            display: flex;
-            gap: 6px;
-        }
-
-        .feed-tab {
-            padding: 8px 14px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            background: var(--bg);
-            border-radius: 20px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .feed-tab.active {
-            background: var(--accent);
-            color: white;
+        .header-btn:hover {
+            background: #EEEFF1;
         }
 
-        /* Live Banner */
-        .live-banner {
-            margin: 16px 20px;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-            border-radius: 12px;
+        .header-btn svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text);
+        }
+
+        /* Stats Strip */
+        .stats-strip {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .stats-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stat-pill {
+            flex-shrink: 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
+            padding: 10px 16px;
+            background: var(--surface);
+            border-radius: 24px;
             font-size: 14px;
+            font-weight: 600;
         }
 
-        .live-dot {
-            width: 8px;
-            height: 8px;
+        .stat-pill .icon {
+            font-size: 16px;
+        }
+
+        .stat-pill.streak { background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); color: #92400E; }
+        .stat-pill.rank { background: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%); color: #5B21B6; }
+        .stat-pill.kudos { background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); color: #065F46; }
+
+        /* Content */
+        .content {
+            padding-bottom: 100px;
+        }
+
+        /* Active Quest Card */
+        .quest-section {
+            padding: 20px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .active-quest {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border-radius: 24px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .active-quest::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .quest-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .quest-badge .dot {
+            width: 6px;
+            height: 6px;
             background: var(--green);
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
         }
 
-        .live-banner strong {
-            color: var(--green);
-        }
-
-        .live-join {
-            margin-left: auto;
-            padding: 6px 14px;
-            background: var(--green);
+        .quest-title {
+            font-size: 22px;
+            font-weight: 700;
             color: white;
-            border-radius: 16px;
-            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .quest-author {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+        }
+
+        .quest-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .quest-day {
+            font-size: 14px;
             font-weight: 600;
-            border: none;
+            color: white;
+        }
+
+        .quest-streak {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-purple);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .quick-btn {
+            flex: 1;
+            padding: 14px 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quick-btn.primary {
+            background: white;
+            color: var(--text);
+        }
+
+        .quick-btn.secondary {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .quick-btn:active {
+            transform: scale(0.98);
         }
 
         /* Eliza Card */
+        .eliza-section {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
         .eliza-card {
-            margin: 0 20px 12px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
-            border-radius: 16px;
-            padding: 16px;
+            background: var(--gradient-purple);
+            border-radius: 20px;
+            padding: 20px;
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eliza-card::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
         }
 
         .eliza-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 14px;
         }
 
         .eliza-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
             background: rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
+            font-weight: 800;
+            font-size: 16px;
         }
 
         .eliza-name {
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 15px;
         }
 
-        .eliza-tag {
+        .eliza-role {
             font-size: 12px;
-            opacity: 0.85;
+            opacity: 0.8;
         }
 
         .eliza-text {
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 12px;
-            opacity: 0.95;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 16px;
         }
 
         .eliza-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .eliza-btn {
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-size: 13px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             border: none;
+            transition: all 0.2s;
         }
 
         .eliza-btn.primary {
             background: white;
-            color: var(--accent-dark);
+            color: #7C3AED;
         }
 
-        .eliza-btn.secondary {
+        .eliza-btn.ghost {
             background: rgba(255,255,255,0.2);
             color: white;
         }
 
-        /* Stats Bar */
-        .stats-bar {
-            display: flex;
-            gap: 8px;
+        /* Live Activity */
+        .live-section {
             padding: 0 20px;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
         }
 
-        .stat-chip {
+        .live-banner {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
+            gap: 12px;
+            padding: 14px 18px;
             background: var(--surface);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
+            border-radius: 16px;
         }
 
-        .stat-chip .value {
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .live-count {
+            font-size: 15px;
             font-weight: 700;
         }
 
-        .stat-chip.streak .value { color: var(--orange); }
-        .stat-chip.rank .value { color: var(--accent); }
-        .stat-chip.kudos .value { color: var(--green); }
+        .live-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .live-join {
+            margin-left: auto;
+            padding: 10px 18px;
+            background: var(--green);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Feed Section */
+        .feed-section {
+            padding: 0 20px;
+        }
+
+        .feed-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .feed-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .feed-tabs {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--surface);
+            border-radius: 12px;
+        }
+
+        .feed-tab {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .feed-tab.active {
+            background: white;
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+        }
 
         /* Feed Items */
+        .feed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .feed-item {
-            padding: 16px 20px;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 18px;
+            transition: all 0.2s;
+        }
+
+        .feed-item:active {
+            transform: scale(0.99);
         }
 
         .feed-item-header {
             display: flex;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .feed-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             color: white;
             flex-shrink: 0;
@@ -439,6 +501,7 @@
 
         .feed-meta {
             flex: 1;
+            min-width: 0;
         }
 
         .feed-name-row {
@@ -449,93 +512,319 @@
         }
 
         .feed-name {
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 15px;
         }
 
-        .feed-badge {
-            padding: 2px 8px;
+        .streak-badge {
+            padding: 3px 8px;
             border-radius: 6px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            color: #92400E;
         }
 
-        .feed-badge.streak {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--orange);
-        }
-
-        .feed-badge.milestone {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--green);
+        .milestone-badge {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            color: #065F46;
         }
 
         .feed-time {
-            font-size: 12px;
-            color: var(--text-tertiary);
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
         .feed-content {
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 14px;
             color: var(--text);
         }
 
         .feed-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
         }
 
         .feed-action {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 13px;
-            color: var(--text-tertiary);
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .feed-action.active {
+        .feed-action:hover, .feed-action.active {
             color: var(--pink);
         }
 
         .feed-action svg {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
         }
 
-        /* Cohort Progress */
-        .cohort-bar {
-            margin: 0 20px 12px;
-            padding: 14px 16px;
+        /* Leaderboard */
+        .leaderboard-section {
+            display: none;
+        }
+
+        .leaderboard-section.active {
+            display: block;
+        }
+
+        .leaderboard-card {
             background: var(--surface);
-            border-radius: 12px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 12px;
         }
 
-        .cohort-header {
+        .leaderboard-header {
+            padding: 16px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leaderboard-item {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+        }
+
+        .leaderboard-item + .leaderboard-item {
+            border-top: 1px solid var(--border);
+        }
+
+        .rank-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .rank-badge.gold {
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+            color: #78350F;
+        }
+
+        .rank-badge.silver {
+            background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%);
+            color: #374151;
+        }
+
+        .rank-badge.bronze {
+            background: linear-gradient(135deg, #FDBA74 0%, #F97316 100%);
+            color: #7C2D12;
+        }
+
+        .rank-badge.you {
+            background: var(--gradient-purple);
+            color: white;
+        }
+
+        .leaderboard-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            color: white;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .leaderboard-detail {
             font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .leaderboard-score {
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--orange);
+        }
+
+        .leaderboard-item.highlight {
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        /* People Section */
+        .people-section {
+            display: none;
+        }
+
+        .people-section.active {
+            display: block;
+        }
+
+        .person-card {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        .person-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .person-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
+        }
+
+        .person-info {
+            flex: 1;
+        }
+
+        .person-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .person-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .follow-btn {
+            padding: 10px 20px;
+            background: var(--text);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .follow-btn.following {
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 2px solid var(--border);
+        }
+
+        .person-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .person-tag {
+            padding: 6px 12px;
+            background: white;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
             color: var(--text-secondary);
         }
 
-        .cohort-progress {
-            height: 6px;
-            background: var(--surface-2);
-            border-radius: 3px;
-            overflow: hidden;
+        .match-reason {
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
-        .cohort-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--green) 0%, var(--accent) 100%);
-            border-radius: 3px;
+        .match-reason strong {
+            color: var(--accent);
         }
 
-        /* Bottom Nav - Mindvalley app nav */
+        /* Other Quests */
+        .other-quests {
+            padding: 20px;
+        }
+
+        .quest-mini {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: var(--surface);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quest-mini:active {
+            transform: scale(0.99);
+        }
+
+        .quest-mini-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .quest-mini-icon.lifebook {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
+        }
+
+        .quest-mini-info {
+            flex: 1;
+        }
+
+        .quest-mini-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .quest-mini-progress {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .quest-mini-streak {
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -548,6 +837,7 @@
             justify-content: space-around;
             padding: 12px 0 28px;
             border-top: 1px solid var(--border);
+            z-index: 100;
         }
 
         .nav-item {
@@ -556,16 +846,14 @@
             align-items: center;
             gap: 4px;
             font-size: 10px;
-            color: var(--text-tertiary);
+            font-weight: 500;
+            color: var(--text-muted);
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .nav-item.active {
             color: var(--text);
-        }
-
-        .nav-item.active .nav-icon {
-            color: var(--accent);
         }
 
         .nav-icon {
@@ -573,32 +861,39 @@
             height: 24px;
         }
 
-        .nav-icon.community {
-            background: linear-gradient(135deg, #F59E0B 0%, #8B5CF6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .nav-item.active .nav-icon {
+            color: var(--accent);
         }
 
         /* Check-in FAB */
-        .checkin-fab {
+        .fab {
             position: fixed;
-            bottom: 100px;
+            bottom: 110px;
             right: 20px;
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
-            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-purple);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
             cursor: pointer;
-            z-index: 100;
+            z-index: 99;
+            transition: all 0.2s;
         }
 
-        .checkin-fab svg {
-            width: 26px;
-            height: 26px;
+        .fab:hover {
+            transform: scale(1.05);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .fab svg {
+            width: 28px;
+            height: 28px;
             color: white;
         }
 
@@ -606,7 +901,7 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(8px);
             display: none;
             align-items: flex-end;
@@ -622,8 +917,9 @@
             width: 100%;
             max-width: 430px;
             background: var(--bg);
-            border-radius: 20px 20px 0 0;
-            padding: 20px 20px 40px;
+            border-radius: 28px 28px 0 0;
+            padding: 24px;
+            padding-bottom: 40px;
             animation: slideUp 0.3s ease;
         }
 
@@ -633,34 +929,34 @@
         }
 
         .modal-handle {
-            width: 36px;
-            height: 4px;
-            background: var(--surface-2);
-            border-radius: 2px;
-            margin: 0 auto 20px;
+            width: 40px;
+            height: 5px;
+            background: #E5E7EB;
+            border-radius: 3px;
+            margin: 0 auto 24px;
         }
 
         .modal-title {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .checkin-options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
 
         .checkin-option {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 16px;
+            gap: 16px;
+            padding: 18px;
             background: var(--surface);
-            border-radius: 14px;
+            border-radius: 16px;
             cursor: pointer;
             border: 2px solid transparent;
             transition: all 0.2s;
@@ -672,283 +968,170 @@
         }
 
         .checkin-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--bg);
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
+        }
+
+        .checkin-text {
+            flex: 1;
         }
 
         .checkin-label {
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 2px;
         }
 
         .checkin-desc {
-            font-size: 12px;
-            color: var(--text-tertiary);
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
         .modal-submit {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+            padding: 18px;
+            background: var(--gradient-purple);
             border: none;
-            border-radius: 14px;
+            border-radius: 16px;
             color: white;
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .modal-submit:disabled {
             opacity: 0.4;
+            cursor: not-allowed;
         }
 
-        /* Tab content */
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
+        .modal-submit:not(:disabled):active {
+            transform: scale(0.98);
         }
 
-        /* Leaderboard styles */
-        .leaderboard-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 20px;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .rank {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
+        .feed-item, .person-card, .leaderboard-card {
+            animation: fadeIn 0.4s ease;
         }
-
-        .rank.gold { background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%); color: #92400E; }
-        .rank.silver { background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%); color: #374151; }
-        .rank.bronze { background: linear-gradient(135deg, #FDBA74 0%, #F97316 100%); color: #9A3412; }
-        .rank.you { background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%); color: white; }
-
-        .leaderboard-info { flex: 1; }
-        .leaderboard-name { font-weight: 500; font-size: 14px; }
-        .leaderboard-detail { font-size: 12px; color: var(--text-tertiary); }
-        .leaderboard-stat { font-weight: 700; color: var(--orange); }
-
-        .leaderboard-you {
-            background: rgba(139, 92, 246, 0.06);
-        }
-
-        /* Discover */
-        .discover-card {
-            margin: 12px 20px;
-            padding: 16px;
-            background: var(--surface);
-            border-radius: 16px;
-        }
-
-        .discover-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .discover-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-        }
-
-        .discover-info { flex: 1; }
-        .discover-name { font-weight: 600; font-size: 15px; }
-        .discover-meta { font-size: 12px; color: var(--text-tertiary); }
-
-        .follow-btn {
-            padding: 8px 20px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .follow-btn.following {
-            background: var(--surface-2);
-            color: var(--text-secondary);
-        }
-
-        .discover-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-
-        .discover-tag {
-            padding: 5px 10px;
-            background: var(--bg);
-            border-radius: 8px;
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-
-        .discover-reason {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-        }
-
-        .discover-reason strong { color: var(--accent); }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- App Header -->
-        <header class="app-header">
-            <div class="user-avatar">
-                <div style="width:100%;height:100%;background:linear-gradient(135deg,#FF6B6B,#FF8E53);"></div>
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <h1 class="page-title">Community</h1>
+                <div class="header-actions">
+                    <div class="header-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    </div>
+                    <div class="header-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    </div>
+                </div>
             </div>
-            <div class="header-icons">
-                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <div class="stats-strip">
+                <div class="stat-pill streak"><span class="icon">🔥</span> 12 day streak</div>
+                <div class="stat-pill rank"><span class="icon">🏆</span> #47 rank</div>
+                <div class="stat-pill kudos"><span class="icon">💜</span> 89 kudos</div>
             </div>
         </header>
 
-        <!-- Main Tabs -->
-        <nav class="main-tabs">
-            <div class="main-tab active">Networks</div>
-            <div class="main-tab">Events</div>
-            <div class="main-tab">People</div>
-        </nav>
-
         <!-- Content -->
         <main class="content">
-            <!-- Your Networks -->
-            <section class="section">
-                <div class="section-header">
-                    <h2 class="section-title">Your Networks</h2>
-                    <span class="see-all">See All</span>
-                </div>
-                <div class="networks-scroll">
-                    <div class="network-card active" onclick="selectNetwork('silva')">
-                        <div class="network-image silva">
-                            <div class="network-image-text">
-                                <h3>SILVA ULTRAMIND</h3>
-                                <span>Jose Silva</span>
-                            </div>
-                        </div>
-                        <div class="network-info">
-                            <div class="network-name">Silva UltraMind System</div>
-                            <div class="network-stats">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                Day 12 • 12🔥 streak
-                            </div>
-                        </div>
+            <!-- Active Quest -->
+            <section class="quest-section">
+                <div class="section-label">Active Quest</div>
+                <div class="active-quest">
+                    <div class="quest-badge">
+                        <span class="dot"></span>
+                        47 practicing now
                     </div>
-                    <div class="network-card" onclick="selectNetwork('lifebook')">
-                        <div class="network-image lifebook">
-                            <div class="network-image-text">
-                                <h3>LIFEBOOK</h3>
-                                <span>Jon & Missy Butcher</span>
-                            </div>
-                        </div>
-                        <div class="network-info">
-                            <div class="network-name">Lifebook Online</div>
-                            <div class="network-stats">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                Week 2 • 5🔥 streak
-                            </div>
-                        </div>
+                    <div class="quest-title">Silva UltraMind System</div>
+                    <div class="quest-author">with Jose Silva</div>
+                    <div class="quest-progress">
+                        <span class="quest-day">Day 12 of 28</span>
+                        <span class="quest-streak">🔥 12</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 43%"></div>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-btn primary" onclick="openCheckin()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Check In
+                        </button>
+                        <button class="quick-btn secondary">View Feed</button>
                     </div>
                 </div>
             </section>
 
-            <!-- Feed Section (Network selected) -->
+            <!-- Eliza -->
+            <section class="eliza-section">
+                <div class="eliza-card">
+                    <div class="eliza-header">
+                        <div class="eliza-avatar">E</div>
+                        <div>
+                            <div class="eliza-name">Eliza</div>
+                            <div class="eliza-role">Your AI Guide</div>
+                        </div>
+                    </div>
+                    <div class="eliza-text">Day 12 is about Remote Viewing. Have you ever had a moment where you "just knew" something before it happened?</div>
+                    <div class="eliza-actions">
+                        <button class="eliza-btn primary">Share My Story</button>
+                        <button class="eliza-btn ghost">34 replies</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Activity -->
+            <section class="live-section">
+                <div class="live-banner">
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        <span class="live-count">47</span>
+                    </div>
+                    <span class="live-label">practicing right now</span>
+                    <button class="live-join">Join</button>
+                </div>
+            </section>
+
+            <!-- Feed -->
             <section class="feed-section">
                 <div class="feed-header">
-                    <div>
-                        <div class="feed-title">Silva UltraMind</div>
-                        <div class="feed-subtitle">1,247 members • Day 12 of 28</div>
-                    </div>
+                    <h2 class="feed-title">Activity</h2>
                     <div class="feed-tabs">
-                        <div class="feed-tab active" data-tab="feed" onclick="switchFeedTab('feed')">Feed</div>
-                        <div class="feed-tab" data-tab="ranks" onclick="switchFeedTab('ranks')">Ranks</div>
-                        <div class="feed-tab" data-tab="discover" onclick="switchFeedTab('discover')">People</div>
+                        <div class="feed-tab active" data-tab="feed" onclick="switchTab('feed')">Feed</div>
+                        <div class="feed-tab" data-tab="ranks" onclick="switchTab('ranks')">Ranks</div>
+                        <div class="feed-tab" data-tab="people" onclick="switchTab('people')">People</div>
                     </div>
                 </div>
 
-                <!-- Feed Tab -->
-                <div class="tab-content active" id="feed-content">
-                    <div class="live-banner">
-                        <span class="live-dot"></span>
-                        <span><strong>47</strong> practicing now</span>
-                        <button class="live-join">Join</button>
-                    </div>
-
-                    <div class="eliza-card">
-                        <div class="eliza-header">
-                            <div class="eliza-avatar">E</div>
-                            <div>
-                                <div class="eliza-name">Eliza</div>
-                                <div class="eliza-tag">Daily Reflection</div>
-                            </div>
-                        </div>
-                        <div class="eliza-text">Day 12 is about Remote Viewing. Have you ever had a moment where you "just knew" something?</div>
-                        <div class="eliza-actions">
-                            <button class="eliza-btn primary">Share</button>
-                            <button class="eliza-btn secondary">34 replies</button>
-                        </div>
-                    </div>
-
-                    <div class="stats-bar">
-                        <div class="stat-chip streak"><span class="value">12</span>🔥 streak</div>
-                        <div class="stat-chip rank">#<span class="value">47</span> rank</div>
-                        <div class="stat-chip kudos"><span class="value">89</span> kudos</div>
-                    </div>
-
-                    <div class="cohort-bar">
-                        <div class="cohort-header">
-                            <span>January Cohort</span>
-                            <span><strong>78%</strong> still active</span>
-                        </div>
-                        <div class="cohort-progress">
-                            <div class="cohort-fill" style="width: 78%"></div>
-                        </div>
-                    </div>
-
+                <!-- Feed Content -->
+                <div class="feed-list" id="feed-content">
                     <div class="feed-item">
                         <div class="feed-item-header">
                             <div class="feed-avatar" style="background: linear-gradient(135deg, #10B981, #059669);">MK</div>
                             <div class="feed-meta">
                                 <div class="feed-name-row">
                                     <span class="feed-name">Marcus Kim</span>
-                                    <span class="feed-badge streak">21🔥</span>
+                                    <span class="streak-badge">21🔥</span>
                                 </div>
-                                <span class="feed-time">12m ago • Day 21</span>
+                                <span class="feed-time">12m ago · Day 21</span>
                             </div>
                         </div>
-                        <div class="feed-content">Just hit 3 weeks! The Mental Video Technique gave me clarity on a decision I'd been stuck on for months.</div>
+                        <div class="feed-content">Just hit 3 weeks! The Mental Video Technique gave me clarity on a decision I'd been stuck on for months. This stuff actually works.</div>
                         <div class="feed-actions">
                             <span class="feed-action active" onclick="toggleKudos(this)">
                                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -968,10 +1151,10 @@
                                 <div class="feed-name-row">
                                     <span class="feed-name">Thomas Wong</span>
                                 </div>
-                                <span class="feed-time">1h ago • Day 12</span>
+                                <span class="feed-time">1h ago · Day 12</span>
                             </div>
                         </div>
-                        <div class="feed-content">Struggling with visualization today. The mental screen just feels blank. Anyone else?</div>
+                        <div class="feed-content">Struggling with visualization today. The mental screen just feels blank. Anyone else experience this?</div>
                         <div class="feed-actions">
                             <span class="feed-action" onclick="toggleKudos(this)">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -986,134 +1169,146 @@
 
                     <div class="feed-item">
                         <div class="feed-item-header">
-                            <div class="feed-avatar" style="background: linear-gradient(135deg, #F59E0B, #D97706);">EP</div>
+                            <div class="feed-avatar" style="background: linear-gradient(135deg, #F59E0B, #D97706);">SJ</div>
                             <div class="feed-meta">
                                 <div class="feed-name-row">
-                                    <span class="feed-name">Edgar Patel</span>
-                                    <span class="feed-badge streak">14🔥</span>
+                                    <span class="feed-name">Sarah Johnson</span>
+                                    <span class="milestone-badge">Week 2 ✓</span>
                                 </div>
-                                <span class="feed-time">2h ago • Day 14</span>
+                                <span class="feed-time">3h ago · Day 14</span>
                             </div>
                         </div>
-                        <div class="feed-content">Morning practice done. ☀️</div>
+                        <div class="feed-content">Two weeks down! The centering exercise has become my morning ritual. My team at work has noticed I'm calmer in meetings 😅</div>
                         <div class="feed-actions">
                             <span class="feed-action" onclick="toggleKudos(this)">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                19
+                                63
                             </span>
                             <span class="feed-action">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                                2
+                                8
                             </span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Ranks Tab -->
-                <div class="tab-content" id="ranks-content">
-                    <div style="padding: 16px 20px; font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">🔥 Top Streaks</div>
-
-                    <div class="leaderboard-item">
-                        <div class="rank gold">1</div>
-                        <div class="feed-avatar" style="background: linear-gradient(135deg, #10B981, #059669); width: 38px; height: 38px; font-size: 13px;">MK</div>
-                        <div class="leaderboard-info">
-                            <div class="leaderboard-name">Marcus Kim</div>
-                            <div class="leaderboard-detail">Day 21</div>
+                <!-- Ranks Content -->
+                <div class="leaderboard-section" id="ranks-content">
+                    <div class="leaderboard-card">
+                        <div class="leaderboard-header">🔥 Top Streaks This Week</div>
+                        <div class="leaderboard-item">
+                            <div class="rank-badge gold">1</div>
+                            <div class="leaderboard-avatar" style="background: linear-gradient(135deg, #10B981, #059669);">MK</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-name">Marcus Kim</div>
+                                <div class="leaderboard-detail">Day 21</div>
+                            </div>
+                            <div class="leaderboard-score">21🔥</div>
                         </div>
-                        <div class="leaderboard-stat">21🔥</div>
+                        <div class="leaderboard-item">
+                            <div class="rank-badge silver">2</div>
+                            <div class="leaderboard-avatar" style="background: linear-gradient(135deg, #3B82F6, #6366F1);">LM</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-name">Lisa Martinez</div>
+                                <div class="leaderboard-detail">Day 19</div>
+                            </div>
+                            <div class="leaderboard-score">19🔥</div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div class="rank-badge bronze">3</div>
+                            <div class="leaderboard-avatar" style="background: linear-gradient(135deg, #8B5CF6, #EC4899);">JP</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-name">Jeanne Peters</div>
+                                <div class="leaderboard-detail">Day 14</div>
+                            </div>
+                            <div class="leaderboard-score">14🔥</div>
+                        </div>
+                        <div class="leaderboard-item highlight">
+                            <div class="rank-badge you">47</div>
+                            <div class="leaderboard-avatar" style="background: var(--gradient-purple);">You</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-name">You</div>
+                                <div class="leaderboard-detail">Day 12</div>
+                            </div>
+                            <div class="leaderboard-score">12🔥</div>
+                        </div>
                     </div>
 
-                    <div class="leaderboard-item">
-                        <div class="rank silver">2</div>
-                        <div class="feed-avatar" style="background: linear-gradient(135deg, #3B82F6, #6366F1); width: 38px; height: 38px; font-size: 13px;">LM</div>
-                        <div class="leaderboard-info">
-                            <div class="leaderboard-name">Lisa Martinez</div>
-                            <div class="leaderboard-detail">Day 19</div>
+                    <div class="leaderboard-card">
+                        <div class="leaderboard-header">💜 Most Supportive</div>
+                        <div class="leaderboard-item">
+                            <div class="rank-badge gold">1</div>
+                            <div class="leaderboard-avatar" style="background: linear-gradient(135deg, #06B6D4, #0891B2);">RJ</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-name">Rachel Jones</div>
+                                <div class="leaderboard-detail">142 kudos given</div>
+                            </div>
+                            <div class="leaderboard-score" style="color: var(--accent);">💜</div>
                         </div>
-                        <div class="leaderboard-stat">19🔥</div>
-                    </div>
-
-                    <div class="leaderboard-item">
-                        <div class="rank bronze">3</div>
-                        <div class="feed-avatar" style="background: linear-gradient(135deg, #8B5CF6, #EC4899); width: 38px; height: 38px; font-size: 13px;">JP</div>
-                        <div class="leaderboard-info">
-                            <div class="leaderboard-name">Jeanne Peters</div>
-                            <div class="leaderboard-detail">Day 14</div>
-                        </div>
-                        <div class="leaderboard-stat">14🔥</div>
-                    </div>
-
-                    <div class="leaderboard-item leaderboard-you">
-                        <div class="rank you">47</div>
-                        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--accent), var(--pink)); width: 38px; height: 38px; font-size: 13px;">You</div>
-                        <div class="leaderboard-info">
-                            <div class="leaderboard-name">You</div>
-                            <div class="leaderboard-detail">Day 12</div>
-                        </div>
-                        <div class="leaderboard-stat">12🔥</div>
-                    </div>
-
-                    <div style="padding: 20px 20px 12px; font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">💜 Most Supportive</div>
-
-                    <div class="leaderboard-item">
-                        <div class="rank gold">1</div>
-                        <div class="feed-avatar" style="background: linear-gradient(135deg, #06B6D4, #0891B2); width: 38px; height: 38px; font-size: 13px;">RJ</div>
-                        <div class="leaderboard-info">
-                            <div class="leaderboard-name">Rachel Jones</div>
-                            <div class="leaderboard-detail">142 kudos given</div>
-                        </div>
-                        <div class="leaderboard-stat" style="color: var(--accent);">💜</div>
                     </div>
                 </div>
 
-                <!-- Discover Tab -->
-                <div class="tab-content" id="discover-content">
-                    <div class="discover-card">
-                        <div class="discover-header">
-                            <div class="discover-avatar" style="background: linear-gradient(135deg, #F59E0B, #D97706);">EP</div>
-                            <div class="discover-info">
-                                <div class="discover-name">Edgar Patel</div>
-                                <div class="discover-meta">Day 14 • 14🔥 streak</div>
+                <!-- People Content -->
+                <div class="people-section" id="people-content">
+                    <div class="person-card">
+                        <div class="person-header">
+                            <div class="person-avatar" style="background: linear-gradient(135deg, #F59E0B, #D97706);">EP</div>
+                            <div class="person-info">
+                                <div class="person-name">Edgar Patel</div>
+                                <div class="person-meta">Day 14 · 14🔥 streak</div>
                             </div>
                             <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
                         </div>
-                        <div class="discover-tags">
-                            <span class="discover-tag">🎯 Career transition</span>
-                            <span class="discover-tag">📍 Sydney</span>
-                            <span class="discover-tag">☀️ Morning practice</span>
+                        <div class="person-tags">
+                            <span class="person-tag">🎯 Career transition</span>
+                            <span class="person-tag">📍 Sydney</span>
+                            <span class="person-tag">☀️ Morning practice</span>
                         </div>
-                        <div class="discover-reason">
-                            <strong>Eliza:</strong> You're both in career transitions and prefer morning practice.
+                        <div class="match-reason">
+                            <strong>Eliza:</strong> You're both going through career transitions and prefer morning practice.
                         </div>
                     </div>
 
-                    <div class="discover-card">
-                        <div class="discover-header">
-                            <div class="discover-avatar" style="background: linear-gradient(135deg, #EC4899, #8B5CF6);">PS</div>
-                            <div class="discover-info">
-                                <div class="discover-name">Priya Sharma</div>
-                                <div class="discover-meta">Day 12 • Same day as you!</div>
+                    <div class="person-card">
+                        <div class="person-header">
+                            <div class="person-avatar" style="background: linear-gradient(135deg, #EC4899, #8B5CF6);">PS</div>
+                            <div class="person-info">
+                                <div class="person-name">Priya Sharma</div>
+                                <div class="person-meta">Day 12 · Same day as you!</div>
                             </div>
                             <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
                         </div>
-                        <div class="discover-tags">
-                            <span class="discover-tag">📅 Day 12</span>
-                            <span class="discover-tag">🧘 First quest</span>
+                        <div class="person-tags">
+                            <span class="person-tag">📅 Day 12</span>
+                            <span class="person-tag">🧘 First quest</span>
                         </div>
-                        <div class="discover-reason">
+                        <div class="match-reason">
                             <strong>Eliza:</strong> You're on the exact same day — perfect accountability match.
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Other Quests -->
+            <section class="other-quests">
+                <div class="section-label">Your Other Quests</div>
+                <div class="quest-mini">
+                    <div class="quest-mini-icon lifebook">📗</div>
+                    <div class="quest-mini-info">
+                        <div class="quest-mini-name">Lifebook Online</div>
+                        <div class="quest-mini-progress">Week 2 · <span class="quest-mini-streak">5🔥</span></div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                </div>
+            </section>
         </main>
 
-        <!-- Check-in FAB -->
-        <div class="checkin-fab" onclick="openCheckin()">
+        <!-- FAB -->
+        <div class="fab" onclick="openCheckin()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
 
-        <!-- Bottom Nav (Mindvalley app) -->
+        <!-- Bottom Nav -->
         <nav class="bottom-nav">
             <div class="nav-item">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -1124,7 +1319,7 @@
                 <span>Programs</span>
             </div>
             <div class="nav-item">
-                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                 <span>Meditations</span>
             </div>
             <div class="nav-item active">
@@ -1142,21 +1337,21 @@
             <div class="checkin-options">
                 <div class="checkin-option" onclick="selectCheckin(this)">
                     <div class="checkin-icon">✅</div>
-                    <div>
+                    <div class="checkin-text">
                         <div class="checkin-label">Completed today's lesson</div>
                         <div class="checkin-desc">Day 12: Remote Viewing</div>
                     </div>
                 </div>
                 <div class="checkin-option" onclick="selectCheckin(this)">
                     <div class="checkin-icon">🧘</div>
-                    <div>
+                    <div class="checkin-text">
                         <div class="checkin-label">Did my practice</div>
                         <div class="checkin-desc">Centering Exercise</div>
                     </div>
                 </div>
                 <div class="checkin-option" onclick="selectCheckin(this)">
                     <div class="checkin-icon">📝</div>
-                    <div>
+                    <div class="checkin-text">
                         <div class="checkin-label">Journaled / Reflected</div>
                         <div class="checkin-desc">Wrote about my experience</div>
                     </div>
@@ -1167,14 +1362,14 @@
     </div>
 
     <script>
-        function switchFeedTab(tabId) {
+        function switchTab(tabId) {
             document.querySelectorAll('.feed-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.tab === tabId);
             });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabId + '-content').classList.add('active');
+
+            document.getElementById('feed-content').style.display = tabId === 'feed' ? 'flex' : 'none';
+            document.getElementById('ranks-content').classList.toggle('active', tabId === 'ranks');
+            document.getElementById('people-content').classList.toggle('active', tabId === 'people');
         }
 
         function toggleKudos(el) {
@@ -1191,13 +1386,8 @@
         }
 
         function toggleFollow(btn) {
-            if (btn.classList.contains('following')) {
-                btn.classList.remove('following');
-                btn.textContent = 'Follow';
-            } else {
-                btn.classList.add('following');
-                btn.textContent = 'Following';
-            }
+            btn.classList.toggle('following');
+            btn.textContent = btn.classList.contains('following') ? 'Following' : 'Follow';
         }
 
         function openCheckin() {
@@ -1216,16 +1406,12 @@
 
         function submitCheckin() {
             closeCheckin();
+            // Success feedback would go here
         }
 
         document.getElementById('checkin-modal').addEventListener('click', function(e) {
             if (e.target === this) closeCheckin();
         });
-
-        function selectNetwork(network) {
-            document.querySelectorAll('.network-card').forEach(card => card.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        }
     </script>
 </body>
 </html>
