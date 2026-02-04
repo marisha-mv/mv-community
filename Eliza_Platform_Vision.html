@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliza Platform - The AI-Native Community Vision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #5B21B6;
+            --primary-light: #A78BFA;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --dark: #0F172A;
+            --gray: #64748B;
+            --light: #F1F5F9;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--white);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(124,58,237,0.1)" stroke-width="0.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(236,72,153,0.1)" stroke-width="0.5"/><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(124,58,237,0.1)" stroke-width="0.5"/></svg>');
+            background-size: 300px;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(124, 58, 237, 0.3);
+            border: 1px solid rgba(124, 58, 237, 0.5);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A78BFA 50%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 24px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .lead {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin-bottom: 48px;
+        }
+
+        /* Comparison */
+        .comparison {
+            background: var(--light);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        .comparison-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+        }
+
+        .comparison-card.old {
+            opacity: 0.7;
+        }
+
+        .comparison-card.new {
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.15);
+        }
+
+        .comparison-card.new::before {
+            content: 'THE VISION';
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .comparison-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-card h3 span {
+            font-size: 1.5rem;
+        }
+
+        .comparison-list {
+            list-style: none;
+            margin-top: 24px;
+        }
+
+        .comparison-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: var(--gray);
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .x {
+            color: #EF4444;
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+        }
+
+        /* Architecture */
+        .architecture {
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+            color: white;
+        }
+
+        .architecture h2, .architecture h3 {
+            color: white;
+        }
+
+        .architecture .lead {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .arch-diagram {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 48px;
+            margin-top: 48px;
+        }
+
+        .arch-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .arch-layer {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .arch-layer.eliza {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+            border-color: var(--primary);
+        }
+
+        .layer-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .layer-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .layer-item {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Conversation Demo */
+        .conversation {
+            background: var(--light);
+        }
+
+        .chat-container {
+            max-width: 600px;
+            margin: 48px auto 0;
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .chat-name {
+            font-weight: 600;
+        }
+
+        .chat-status {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .chat-messages {
+            padding: 24px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .message.eliza .message-avatar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+        }
+
+        .message.eliza .message-bubble {
+            background: var(--light);
+            color: var(--dark);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-action {
+            display: inline-block;
+            background: var(--white);
+            border: 1px solid #E2E8F0;
+            padding: 10px 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            background: var(--white);
+        }
+
+        .use-case-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .use-case-tab {
+            padding: 12px 24px;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            background: var(--white);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .use-case-tab:hover, .use-case-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .use-case-content {
+            display: none;
+            background: var(--light);
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .use-case-content.active {
+            display: block;
+        }
+
+        .use-case-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .flow-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .flow-content h4 {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .flow-content p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Benefits */
+        .benefits {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .benefits h2 {
+            color: white;
+        }
+
+        .benefits .lead {
+            color: rgba(255,255,255,0.85);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .benefit-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .benefit-card h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .benefit-card p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+        }
+
+        .benefit-stat {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            background: var(--white);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 700px;
+            margin: 48px auto 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 64px;
+            padding-bottom: 40px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 16px;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .timeline-phase {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: rgba(255,255,255,0.7);
+            max-width: 500px;
+            margin: 0 auto 32px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 24px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">The Future of Community</div>
+        <h1>What if Eliza WAS the Platform?</h1>
+        <p>Not a bot within Circle.so. Not an add-on. An AI-native community platform where Eliza is the foundation — knowing every member, guiding every journey, building every connection.</p>
+        <div class="hero-cta">
+            <a href="#vision" class="btn btn-primary">See the Vision</a>
+            <a href="#architecture" class="btn btn-secondary">Technical Deep Dive</a>
+        </div>
+    </div>
+</section>
+
+<!-- Comparison -->
+<section class="comparison" id="vision">
+    <div class="container">
+        <span class="section-badge">The Shift</span>
+        <h2>From Bot to Brain</h2>
+        <p class="lead">The difference between adding AI to a platform vs. building AI INTO the platform.</p>
+
+        <div class="comparison-grid">
+            <div class="comparison-card old">
+                <h3><span>🔌</span> Traditional Approach</h3>
+                <p style="color: var(--gray); margin-top: 8px;">Eliza as a bot on Circle.so</p>
+                <ul class="comparison-list">
+                    <li><span class="check">✓</span> Posts daily engagement prompts</li>
+                    <li><span class="check">✓</span> Responds to questions</li>
+                    <li><span class="check">✓</span> Connects members manually</li>
+                    <li><span class="x">✗</span> Limited by Circle's features</li>
+                    <li><span class="x">✗</span> Can't personalize the entire UX</li>
+                    <li><span class="x">✗</span> Data lives in Circle's system</li>
+                    <li><span class="x">✗</span> One-size-fits-all interface</li>
+                </ul>
+            </div>
+            <div class="comparison-card new">
+                <h3><span>🧠</span> Eliza Platform</h3>
+                <p style="color: var(--gray); margin-top: 8px;">Eliza IS the community</p>
+                <ul class="comparison-list">
+                    <li><span class="check">✓</span> Knows every member personally</li>
+                    <li><span class="check">✓</span> Personalizes entire experience</li>
+                    <li><span class="check">✓</span> Auto-matches members in real-time</li>
+                    <li><span class="check">✓</span> Adapts UI to each person's needs</li>
+                    <li><span class="check">✓</span> Owns all data & insights</li>
+                    <li><span class="check">✓</span> Proactively creates opportunities</li>
+                    <li><span class="check">✓</span> Infinite customization potential</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+    <div class="container">
+        <span class="section-badge">Capabilities</span>
+        <h2>What Eliza Can Do as the Platform</h2>
+        <p class="lead">When AI isn't an add-on but the foundation, everything changes.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Personal Onboarding</h3>
+                <p>Eliza interviews each new member through conversation — learning their goals, challenges, learning style, and schedule. Then crafts a personalized 28-day journey just for them.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔮</div>
+                <h3>Predictive Engagement</h3>
+                <p>Eliza notices when someone is about to drop off (based on behavior patterns) and intervenes BEFORE they disengage — with the right message at the right time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Intelligent Matching</h3>
+                <p>Eliza doesn't just suggest connections — she orchestrates them. "You and Maria are both in Week 2, struggling with visualization, and live in similar timezones. Want me to introduce you?"</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Adaptive Content</h3>
+                <p>Based on how someone is progressing, Eliza can surface additional resources, simplify explanations, or challenge high-performers with deeper content — all automatically.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <h3>Voice & Video</h3>
+                <p>Eliza can host voice circles, facilitate video discussions, and even join calls as a participant — guiding conversations and capturing key moments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Progress Journaling</h3>
+                <p>Members talk to Eliza about their experiences, and she captures, organizes, and reflects back their journey — creating a personal transformation record.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>Dynamic Challenges</h3>
+                <p>Eliza creates personalized challenges and accountability structures based on what motivates each individual — some need competition, others need collaboration.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Cross-Quest Intelligence</h3>
+                <p>Eliza learns across ALL Mindvalley quests. She knows that someone who loved Silva might love Superbrain next — and can guide lifetime learning paths.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Conversation Demo -->
+<section class="conversation">
+    <div class="container">
+        <span class="section-badge">Experience</span>
+        <h2>A Day with Eliza</h2>
+        <p class="lead">This isn't a feed you scroll. It's a relationship you build.</p>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-avatar">E</div>
+                <div>
+                    <div class="chat-name">Eliza</div>
+                    <div class="chat-status">Your personal guide</div>
+                </div>
+            </div>
+            <div class="chat-messages">
+                <div class="message eliza">
+                    <div class="message-avatar">E</div>
+                    <div class="message-bubble">
+                        Good morning, Sarah! ☀️ I noticed you completed the Mental Video Technique last night at 11:23pm. How are you feeling this morning? Did anything come through in your dreams?
+                    </div>
+                </div>
+                <div class="message user">
+                    <div class="message-avatar">S</div>
+                    <div class="message-bubble">
+                        Actually yes! I had this weird dream about my old college roommate. Haven't thought about her in years.
+                    </div>
+                </div>
+                <div class="message eliza">
+                    <div class="message-avatar">E</div>
+                    <div class="message-bubble">
+                        That's fascinating! Dreams after Mental Video often surface unexpected connections. Sometimes the "answer" isn't direct — it's symbolic.
+                        <br><br>
+                        Was there a feeling associated with her in the dream? Sometimes our subconscious uses people as symbols for feelings or life chapters.
+                    </div>
+                </div>
+                <div class="message user">
+                    <div class="message-avatar">S</div>
+                    <div class="message-bubble">
+                        Now that you mention it... she always made me feel really confident. Like I could do anything.
+                    </div>
+                </div>
+                <div class="message eliza">
+                    <div class="message-avatar">E</div>
+                    <div class="message-bubble">
+                        There it is. 💜 Your question to higher intelligence was about your career transition, right? Maybe your subconscious is telling you that confidence is the key — and reminding you that you've felt it before.
+                        <br><br>
+                        By the way, I want to introduce you to someone...
+                        <div class="message-action">Meet Thomas — he's working on something similar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture -->
+<section class="architecture" id="architecture">
+    <div class="container">
+        <span class="section-badge" style="background: rgba(255,255,255,0.1); color: white;">Technical Vision</span>
+        <h2>Platform Architecture</h2>
+        <p class="lead">A modern, AI-native stack designed for personalization at scale.</p>
+
+        <div class="arch-diagram">
+            <div class="arch-layers">
+                <div class="arch-layer">
+                    <div class="layer-title">📱 Member Experience Layer</div>
+                    <div class="layer-items">
+                        <span class="layer-item">Web App (React/Next.js)</span>
+                        <span class="layer-item">Mobile Apps (React Native)</span>
+                        <span class="layer-item">Voice Interface</span>
+                        <span class="layer-item">SMS/WhatsApp</span>
+                    </div>
+                </div>
+                <div class="arch-layer eliza">
+                    <div class="layer-title">🧠 Eliza Intelligence Layer</div>
+                    <div class="layer-items">
+                        <span class="layer-item">Claude/GPT-4 Core</span>
+                        <span class="layer-item">Member Memory System</span>
+                        <span class="layer-item">Curriculum Knowledge Base</span>
+                        <span class="layer-item">Behavior Prediction</span>
+                        <span class="layer-item">Matching Engine</span>
+                        <span class="layer-item">Content Personalization</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="layer-title">⚡ Real-time Layer</div>
+                    <div class="layer-items">
+                        <span class="layer-item">WebSocket Connections</span>
+                        <span class="layer-item">Presence Detection</span>
+                        <span class="layer-item">Live Notifications</span>
+                        <span class="layer-item">Video/Voice (LiveKit)</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="layer-title">💾 Data Layer</div>
+                    <div class="layer-items">
+                        <span class="layer-item">Member Profiles</span>
+                        <span class="layer-item">Conversation History</span>
+                        <span class="layer-item">Progress Tracking</span>
+                        <span class="layer-item">Quest Content</span>
+                        <span class="layer-item">Analytics</span>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="layer-title">🔌 Integration Layer</div>
+                    <div class="layer-items">
+                        <span class="layer-item">Mindvalley SSO</span>
+                        <span class="layer-item">Payment Systems</span>
+                        <span class="layer-item">Email/SMS (Twilio)</span>
+                        <span class="layer-item">Calendar Sync</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases -->
+<section class="use-cases">
+    <div class="container">
+        <span class="section-badge">User Journeys</span>
+        <h2>How It Works</h2>
+        <p class="lead">Every touchpoint is an opportunity for Eliza to add value.</p>
+
+        <div class="use-case-tabs">
+            <button class="use-case-tab active" onclick="showUseCase('onboarding')">New Member Onboarding</button>
+            <button class="use-case-tab" onclick="showUseCase('daily')">Daily Engagement</button>
+            <button class="use-case-tab" onclick="showUseCase('stuck')">When Someone's Stuck</button>
+            <button class="use-case-tab" onclick="showUseCase('connection')">Making Connections</button>
+        </div>
+
+        <div class="use-case-content active" id="onboarding">
+            <div class="use-case-flow">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Eliza Welcomes</h4>
+                        <p>"Hi! I'm Eliza, and I'll be your personal guide through Silva UltraMind. Before we begin, I'd love to learn a bit about you..."</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Conversational Interview</h4>
+                        <p>Eliza asks about goals, challenges, schedule preferences, learning style, previous experience with meditation. This feels like chatting with a friend, not filling out a form.</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Personalized Plan Created</h4>
+                        <p>"Based on what you shared, I've customized your journey. Since mornings work best for you and you're focused on career growth, I'll emphasize the Three Scenes and Mental Video techniques..."</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>First Connection Made</h4>
+                        <p>"I'd also like to introduce you to Marcus — he started last week, has similar goals, and I think you two would really click. Want me to connect you?"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="use-case-content" id="daily">
+            <div class="use-case-flow">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Morning Check-in (Personalized Time)</h4>
+                        <p>Eliza reaches out at the time that works for each member. "Good morning, Sarah! Today is Day 10 — we're learning the Three Scenes Technique. Ready to dive in?"</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Contextual Guidance</h4>
+                        <p>Based on yesterday's journal entry where Sarah mentioned struggling with Scene 1, Eliza proactively addresses it: "By the way, remember how Scene 1 felt heavy yesterday? That's normal. Today's lesson will help..."</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Post-Lesson Reflection</h4>
+                        <p>After the lesson, Eliza asks a tailored question: "You mentioned your goal is a career change. What problem did you visualize in Scene 1 today?"</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>Community Moment</h4>
+                        <p>"4 other members are working on career goals this week. Want to see what they're visualizing? Sometimes other people's Scene 3 visions spark new ideas..."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="use-case-content" id="stuck">
+            <div class="use-case-flow">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Eliza Detects the Pattern</h4>
+                        <p>Member hasn't logged in for 2 days. Last session was short. Engagement score dropping. Eliza doesn't wait — she reaches out.</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Gentle, Personalized Outreach</h4>
+                        <p>"Hey Thomas, I noticed you've been quiet. No judgment — life happens. I'm curious though: is something feeling off with the program, or is it just a busy week?"</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Problem Solving Together</h4>
+                        <p>If Thomas shares he's struggling with visualization, Eliza remembers every past conversation and provides specific help: "Remember on Day 3 when you said you 'know' things rather than 'see' them? Let's lean into that..."</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>Accountability Partner Activated</h4>
+                        <p>"Also, I'm going to let Maria know you might need some encouragement. She's been where you are. Sometimes it helps to hear from someone who pushed through."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="use-case-content" id="connection">
+            <div class="use-case-flow">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Pattern Recognition</h4>
+                        <p>Eliza notices that Sarah and Marcus both: are in Week 2, have career-focused goals, mentioned imposter syndrome, prefer morning practice, and live in similar timezones.</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Orchestrated Introduction</h4>
+                        <p>To Sarah: "I'd love to introduce you to Marcus. He's on Day 12, working on a career transition, and mentioned something in his journal that reminded me of what you shared yesterday..."</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Facilitated First Conversation</h4>
+                        <p>Eliza creates a private space for them and even suggests a first topic: "You both mentioned imposter syndrome. Maybe start there? I find it's often the thing we don't want to talk about that creates the deepest connections."</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>Relationship Nurturing</h4>
+                        <p>Eliza checks in periodically: "How's your connection with Marcus going? Want me to suggest a joint challenge you two could do together this week?"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits -->
+<section class="benefits">
+    <div class="container">
+        <span class="section-badge" style="background: rgba(255,255,255,0.2); color: white;">Impact</span>
+        <h2>Why This Changes Everything</h2>
+        <p class="lead">The metrics that matter most — and how an AI-native platform transforms them.</p>
+
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-stat">2-3x</div>
+                <h3>Completion Rates</h3>
+                <p>Personalized pacing, proactive intervention, and genuine accountability dramatically increase quest completion.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-stat">10x</div>
+                <h3>Meaningful Connections</h3>
+                <p>AI-powered matching creates connections that actually matter — not random group assignments.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-stat">∞</div>
+                <h3>Scalable Personalization</h3>
+                <p>Every member gets a personal guide, whether you have 1,000 or 1,000,000 members.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-stat">24/7</div>
+                <h3>Always Available</h3>
+                <p>No matter when someone needs support, Eliza is there — no staffing constraints.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-stat">100%</div>
+                <h3>Data Ownership</h3>
+                <p>Every insight, every pattern, every conversation lives in YOUR system — building compounding value.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-stat">🚀</div>
+                <h3>Competitive Moat</h3>
+                <p>No other personal growth platform has this. It becomes THE reason people choose Mindvalley.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline -->
+<section class="timeline-section">
+    <div class="container">
+        <span class="section-badge">Roadmap</span>
+        <h2>Building the Vision</h2>
+        <p class="lead">A phased approach to bringing Eliza Platform to life.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-phase">Phase 1 (Now)</div>
+                <h4>Eliza on Circle.so</h4>
+                <p>Deploy Eliza as a bot within existing Circle communities. Learn, iterate, prove the concept. Gather data on what works.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-phase">Phase 2</div>
+                <h4>Enhanced Intelligence</h4>
+                <p>Build member memory system, matching engine, and predictive engagement. Eliza gets smarter within Circle.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-phase">Phase 3</div>
+                <h4>Platform MVP</h4>
+                <p>Build the Eliza Platform core — web app, conversation interface, real-time features. Run parallel to Circle for one quest.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-phase">Phase 4</div>
+                <h4>Migration & Scale</h4>
+                <p>Migrate quests to Eliza Platform. Add mobile apps, voice features, cross-quest intelligence. Full platform launch.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-phase">Phase 5</div>
+                <h4>Platform as Product</h4>
+                <p>License Eliza Platform to other creators and organizations. New revenue stream, expanded impact.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Build the Future?</h2>
+        <p>This isn't just a community tool. It's a new category of product — one that could define Mindvalley's next decade.</p>
+        <a href="Eliza_Proposal.html" class="btn btn-primary">Start with Phase 1 →</a>
+    </div>
+</section>
+
+<footer>
+    Eliza Platform Vision — Mindvalley 2025
+</footer>
+
+<script>
+    function showUseCase(id) {
+        // Hide all
+        document.querySelectorAll('.use-case-content').forEach(el => {
+            el.classList.remove('active');
+        });
+        document.querySelectorAll('.use-case-tab').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        // Show selected
+        document.getElementById(id).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
