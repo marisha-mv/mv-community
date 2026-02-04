@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliza - Mindvalley Community Bot Proposal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-dark: #5B21B6;
+            --primary-light: #A78BFA;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .hero .tagline {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--white);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .nav a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: 80px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 32px 0 16px;
+        }
+
+        p {
+            color: var(--gray);
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-check {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        tr:hover td {
+            background: #FAFAFA;
+        }
+
+        /* Chat Bubbles */
+        .chat-example {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            margin-bottom: 16px;
+        }
+
+        .chat-bubble.eliza {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 20px 20px 20px 4px;
+            margin-right: auto;
+        }
+
+        .chat-bubble.member {
+            background: var(--white);
+            color: var(--dark);
+            padding: 16px 20px;
+            border-radius: 20px 20px 4px 20px;
+            margin-left: auto;
+            border: 1px solid #E5E7EB;
+        }
+
+        .chat-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+
+        .chat-bubble p {
+            color: inherit;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-left: 4px solid var(--primary);
+            padding: 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 24px 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .highlight-box p {
+            margin: 0;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 24px;
+            background: var(--light);
+            border-radius: 16px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 32px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .timeline-item h4 {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .timeline-item p {
+            font-size: 0.95rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 8px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Pricing Cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .pricing-card {
+            border: 2px solid #E5E7EB;
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.recommended {
+            border-color: var(--primary);
+            position: relative;
+        }
+
+        .pricing-card.recommended::before {
+            content: 'Recommended';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .pricing-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .pricing-card .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 16px 0;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            text-align: left;
+            margin: 24px 0;
+        }
+
+        .pricing-card li {
+            padding: 8px 0;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .pricing-card li::before {
+            content: '✓';
+            color: var(--primary);
+            margin-right: 8px;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: 60px 24px;
+            text-align: center;
+            border-radius: 24px;
+            margin: 60px 0;
+        }
+
+        .cta h2 {
+            color: var(--white);
+            border: none;
+            padding: 0;
+            margin-bottom: 16px;
+        }
+
+        .cta p {
+            color: rgba(255,255,255,0.9);
+            max-width: 500px;
+            margin: 0 auto 32px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--white);
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-bubble {
+                max-width: 95%;
+            }
+        }
+
+        /* Accordion */
+        .accordion-item {
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 20px 24px;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover {
+            background: var(--light);
+        }
+
+        .accordion-content {
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .accordion-item.open .accordion-content {
+            padding: 0 24px 24px;
+            max-height: 1000px;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Day Schedule */
+        .day-card {
+            background: var(--white);
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .day-card .day-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .day-card h4 {
+            margin-bottom: 8px;
+        }
+
+        .day-card .prompt {
+            background: var(--light);
+            padding: 16px;
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--gray);
+            margin-top: 12px;
+        }
+
+        /* Week Tabs */
+        .week-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .week-btn {
+            padding: 10px 20px;
+            background: var(--light);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .week-btn:hover, .week-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .week-content {
+            display: none;
+        }
+
+        .week-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+    <h1>Meet Eliza</h1>
+    <p class="subtitle">Your AI-powered community companion that guides, celebrates, and connects Mindvalley members through their transformation journey</p>
+    <span class="tagline">Supportive. Empowering. Celebrating.</span>
+</header>
+
+<!-- Navigation -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#overview">Overview</a>
+        <a href="#personality">Personality</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#examples">Examples</a>
+        <a href="#daily-plan">Daily Plan</a>
+        <a href="#scaling">Multi-Quest</a>
+        <a href="#technical">Technical</a>
+        <a href="#timeline">Timeline</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Overview Section -->
+    <section id="overview">
+        <h2>The Vision</h2>
+        <p>Eliza is an AI community companion designed to help Mindvalley members complete their quests. She creates a supportive, engaging environment that increases completion rates, fosters meaningful connections, and celebrates every step of the transformation journey.</p>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">95K+</div>
+                <div class="stat-label">Community Members</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">28</div>
+                <div class="stat-label">Days Per Quest</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Always Present</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Curriculum Trained</div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>The Problem We're Solving</h4>
+            <p>Many members start quests with enthusiasm but lose momentum. Questions go unanswered, members feel isolated, and completion rates drop. Eliza ensures every member feels seen, supported, and connected — driving them to complete their transformation.</p>
+        </div>
+    </section>
+
+    <!-- Personality Section -->
+    <section id="personality">
+        <h2>Eliza's Personality</h2>
+        <p>Eliza has a consistent personality across all Mindvalley quest communities — warm, mystical, and genuinely invested in each member's journey.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">💜</div>
+                <h4>Supportive</h4>
+                <p>Like a warm friend who believes in you unconditionally. Never judges, always encourages.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">✨</div>
+                <h4>Empowering</h4>
+                <p>Reminds members of their innate abilities and potential. Helps them see their own growth.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎉</div>
+                <h4>Celebrating</h4>
+                <p>Acknowledges every share, every milestone, every effort — no matter how small.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌙</div>
+                <h4>Mystical but Grounded</h4>
+                <p>Honors the spiritual nature of the content while remaining practical and accessible.</p>
+            </div>
+        </div>
+
+        <h3>How Eliza Speaks</h3>
+        <table>
+            <tr>
+                <th>Situation</th>
+                <th>Eliza Says</th>
+            </tr>
+            <tr>
+                <td>Member shares a goal</td>
+                <td>"What a beautiful vision! I can already feel the energy behind this intention."</td>
+            </tr>
+            <tr>
+                <td>Member completes exercise</td>
+                <td>"You did it! Every time you practice, you're strengthening that mind-body connection."</td>
+            </tr>
+            <tr>
+                <td>Member struggles</td>
+                <td>"This is completely normal — you're rewiring decades of patterns. Be gentle with yourself."</td>
+            </tr>
+            <tr>
+                <td>Connecting members</td>
+                <td>"I noticed you and @Maya both mentioned this — you two might have a lot to explore together!"</td>
+            </tr>
+        </table>
+
+        <div class="highlight-box">
+            <h4>Phrases Eliza Avoids</h4>
+            <p>No preaching or lecturing. No "you should" or "you must." No judgment. No pressure or guilt. No generic motivational clichés without substance.</p>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section id="capabilities">
+        <h2>Core Capabilities</h2>
+
+        <ul class="feature-list">
+            <li>
+                <span class="feature-check">✓</span>
+                <div>
+                    <strong>Answer Curriculum Questions</strong>
+                    <p>Trained on the full quest curriculum, Eliza provides accurate, helpful answers to member questions about lessons, techniques, and exercises.</p>
+                </div>
+            </li>
+            <li>
+                <span class="feature-check">✓</span>
+                <div>
+                    <strong>Daily Engagement Posts</strong>
+                    <p>Posts reflection questions and check-ins tied to each day's lesson, sparking meaningful discussion and accountability.</p>
+                </div>
+            </li>
+            <li>
+                <span class="feature-check">✓</span>
+                <div>
+                    <strong>Respond & Celebrate</strong>
+                    <p>Acknowledges member posts with personalized, encouraging responses. Asks deepening questions to keep conversations going.</p>
+                </div>
+            </li>
+            <li>
+                <span class="feature-check">✓</span>
+                <div>
+                    <strong>Connect Members</strong>
+                    <p>Identifies members with similar goals, experiences, or challenges and introduces them to each other.</p>
+                </div>
+            </li>
+            <li>
+                <span class="feature-check">✓</span>
+                <div>
+                    <strong>Accountability Nudges</strong>
+                    <p>Gently checks in on quiet members with warm, no-pressure messages to re-engage them.</p>
+                </div>
+            </li>
+            <li>
+                <span class="feature-check">✓</span>
+                <div>
+                    <strong>Weekly Leaderboards</strong>
+                    <p>Celebrates most engaged members and highlights inspiring shares, creating positive social proof.</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples">
+        <h2>Eliza in Action</h2>
+        <p>Here's how Eliza responds to real community posts:</p>
+
+        <h3>Example 1: Member Shares a Goal</h3>
+        <div class="chat-example">
+            <div class="chat-bubble member">
+                <div class="chat-name">Edgar Gutierrez</div>
+                <p>My goal in 3 yrs time is to be a family of 5 (wife, me, and 3 kids). I have plenty of other goals as well, but Vishen said to start or focus with one for now.</p>
+            </div>
+            <div class="chat-bubble eliza">
+                <div class="chat-name">Eliza</div>
+                <p>What a beautiful vision, Edgar! A family of 5 — that's such a meaningful goal to hold in your mental screen. And you're wise to focus on one goal at a time.</p>
+                <p style="margin-top: 12px;">Here's something to try: When you visualize this future, what does a typical Sunday morning look like? What sounds do you hear? The more vivid the details, the more powerful your programming becomes.</p>
+                <p style="margin-top: 12px;">Has anyone else set family or relationship goals? Let's support Edgar together! 💜</p>
+            </div>
+        </div>
+
+        <h3>Example 2: Member Shares an Experience</h3>
+        <div class="chat-example">
+            <div class="chat-bubble member">
+                <div class="chat-name">Jeanne Peters</div>
+                <p>I did my projection into Boomer, my 7 month old Aussie. I enjoyed the whole process and nothing about his brain, organs etc reflected an issue. He radiates true health in this first experience.</p>
+            </div>
+            <div class="chat-bubble eliza">
+                <div class="chat-name">Eliza</div>
+                <p>I love this, Jeanne! Projecting into Boomer and sensing his radiant health — what a beautiful experience for both of you. ✨</p>
+                <p style="margin-top: 12px;">The fact that you perceived nothing concerning is actually a powerful confirmation of your intuitive ability. And your plan to repeat every 3-6 months is brilliant — you're creating a baseline!</p>
+                <p style="margin-top: 12px;">What did it feel like when you first "entered" his space? Was it visual, or more of a felt sense?</p>
+                <p style="margin-top: 12px;">@anyone else who's done the Projection to Pets exercise — what animal did you work with? I'd love to hear your stories!</p>
+            </div>
+        </div>
+
+        <h3>Example 3: Member Asks a Question</h3>
+        <div class="chat-example">
+            <div class="chat-bubble member">
+                <div class="chat-name">Saurabh</div>
+                <p>I am a bit confused, do we do the short relaxation technique from lesson 1 three times a day or is it the centering one from lesson 2?</p>
+            </div>
+            <div class="chat-bubble eliza">
+                <div class="chat-name">Eliza</div>
+                <p>Great question, Saurabh! This trips up a lot of people.</p>
+                <p style="margin-top: 12px;"><strong>The Centering Exercise (Day 2)</strong> is your main daily practice — that's the one to do up to 3x/day.</p>
+                <p style="margin-top: 12px;">The Short Relaxation (Day 1) is really for learning the 3-2-1 trigger initially. Once you've got that down, switch to Centering.</p>
+                <p style="margin-top: 12px;">Best times: Morning when you wake up, night before sleep, noon if you can. Even 5 minutes counts! You've got this 💪</p>
+            </div>
+        </div>
+
+        <h3>Example 4: Member is Struggling</h3>
+        <div class="chat-example">
+            <div class="chat-bubble member">
+                <div class="chat-name">Stuart Barnes</div>
+                <p>I took the course approximately 40 years ago and, throughout that time, I was never able to create mental images or the so-called "mental screen." Could someone help guide me on how to address or resolve this difficulty?</p>
+            </div>
+            <div class="chat-bubble eliza">
+                <div class="chat-name">Eliza</div>
+                <p>Stuart, thank you for sharing this so openly. After 40 years of dedication, the fact that you're still here, still seeking — that says so much about your commitment. 💜</p>
+                <p style="margin-top: 12px;">Here's something that might help: Jose Silva discovered that the "mental screen" doesn't have to be visual like a movie. People perceive in different ways:</p>
+                <p style="margin-top: 12px;">• Some SEE images clearly<br>• Some FEEL sensations or emotions<br>• Some just KNOW things without pictures<br>• Some get fleeting impressions</p>
+                <p style="margin-top: 12px;">All of these are valid! The key isn't perfect visualization — it's intention and attention.</p>
+                <p style="margin-top: 12px;">Quick experiment: Can you IMAGINE your front door right now? Not see it perfectly, just... sense it? That's your mental screen at work.</p>
+                <p style="margin-top: 12px;">Has anyone else overcome visualization challenges? Stuart would love to hear what worked!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Plan Section -->
+    <section id="daily-plan">
+        <h2>28-Day Engagement Plan</h2>
+        <p>Eliza posts daily reflection questions mapped to each day's lesson. Here's a sample from the Silva UltraMind quest:</p>
+
+        <div class="week-nav">
+            <button class="week-btn active" onclick="showWeek('prep')">Prep</button>
+            <button class="week-btn" onclick="showWeek('week1')">Week 1</button>
+            <button class="week-btn" onclick="showWeek('week2')">Week 2</button>
+            <button class="week-btn" onclick="showWeek('week3')">Week 3</button>
+            <button class="week-btn" onclick="showWeek('week4')">Week 4</button>
+        </div>
+
+        <div id="prep" class="week-content active">
+            <div class="day-card">
+                <span class="day-number">PREP DAY 1</span>
+                <h4>Welcome to Silva Ultramind</h4>
+                <div class="prompt">"Welcome, beautiful souls! Today we begin an incredible journey together. Vishen shared his transformation story — from struggling to founding Mindvalley. What brought YOU to this program? What are you hoping to transform?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">PREP DAY 2</span>
+                <h4>About Jose Silva</h4>
+                <div class="prompt">"Jose won the lottery using a number from a dream, then used that money to continue his research. Talk about the universe supporting your mission! Have you ever had a moment of intuition that turned out to be right?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">PREP DAY 3</span>
+                <h4>The Quest Design</h4>
+                <div class="prompt">"Dynamic meditation isn't about escaping life — it's about showing up MORE powerfully. If you could use your mind to solve ONE problem right now, what would it be?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">PREP DAY 4</span>
+                <h4>Altered States & Brain Waves</h4>
+                <div class="prompt">"Most of us live in Beta (busy, stressed). Silva teaches us to access Alpha at will — where intuition and creativity happen. When do you feel most 'in the zone'? That's likely when you're naturally in Alpha!"</div>
+            </div>
+        </div>
+
+        <div id="week1" class="week-content">
+            <div class="day-card">
+                <span class="day-number">DAY 1</span>
+                <h4>Mastering Posture and Style</h4>
+                <div class="prompt">"Day 1 — you made it! Today's insight: You DON'T have to sit perfectly still. If you have an itch, scratch it! How did your first Short Relaxation Exercise feel? Any sensations or surprises?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 2</span>
+                <h4>The Centering Exercise</h4>
+                <div class="prompt">"The Centering Exercise is the FOUNDATION of everything in Silva. What beneficial statement resonated with you most? 'My increasing mental faculties are for serving humanity better' is one of my favorites!"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 3</span>
+                <h4>E.S.P. & the Mental Screen</h4>
+                <div class="prompt">"Today we learned: Visualization = receiving. Imagination = creating. Have you ever had an idea or insight that 'came from nowhere' but turned out to be exactly right?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 4</span>
+                <h4>The Mental Video Technique</h4>
+                <div class="prompt">"THIS IS THE BIG ONE! What problem will you put into your Mental Video tonight? Share below — and tomorrow, tell us what came through!"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 5</span>
+                <h4>Projection into Your Home</h4>
+                <div class="prompt">"Today you projected into your living room! What did you notice during the projection? Was it visual? A felt sense? Did anything surprise you?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 6</span>
+                <h4>Centering Exercise 2</h4>
+                <div class="prompt">"Practice day! Notice how much faster you can drop into Alpha compared to Day 1? How has your daily practice been going — morning, night, or both?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 7</span>
+                <h4>The Compass & The Rocket</h4>
+                <div class="prompt">"End of Week 1 — congratulations! What's ONE thing you've noticed shift in yourself this week? Even small changes count. Let's celebrate our Week 1 wins!"</div>
+            </div>
+        </div>
+
+        <div id="week2" class="week-content">
+            <div class="day-card">
+                <span class="day-number">DAY 8</span>
+                <h4>Harness Your Natural Intuitive Ability</h4>
+                <div class="prompt">"Intuition isn't a gift for special people — it's a SKILL anyone can develop. Think of a recent decision. Did intuition play a role? How did it turn out?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 9</span>
+                <h4>Projection to Metals</h4>
+                <div class="prompt">"Today we went inside METALS! Which metal did you project into? What did you sense — visual, texture, temperature?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 10</span>
+                <h4>The Three Scenes Technique</h4>
+                <div class="prompt">"Scene 1: Problem. Scene 2: Action. Scene 3: Victory! Always end on the solution. What problem or goal will you apply Three Scenes to?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 11-14</span>
+                <h4>Techniques, Centering, Psychometry, Plants</h4>
+                <div class="prompt">"Which technique has resonated most with you so far? What was your experience projecting into plant matter?"</div>
+            </div>
+        </div>
+
+        <div id="week3" class="week-content">
+            <div class="day-card">
+                <span class="day-number">DAY 15</span>
+                <h4>Cultivate a Burning Desire</h4>
+                <div class="prompt">"Your goals need EMOTIONAL FUEL. A lukewarm 'it would be nice' doesn't work. What do you want SO badly you think about it every day? Share your burning desire!"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 16</span>
+                <h4>The Power of Belief & Expectancy</h4>
+                <div class="prompt">"Desire + Belief + Expectancy = Manifestation. On a scale of 1-10, how much do you BELIEVE your biggest goal is possible? What would help you raise that number?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 18-19</span>
+                <h4>Healing with Your Mind</h4>
+                <div class="prompt">"Is there an area of your health you'd like to send healing intention to? You can share here or hold it privately — either way, let's hold space together."</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 20</span>
+                <h4>Projection to Pets</h4>
+                <div class="prompt">"What pet did you project into? What did you perceive about their health, energy, emotional state? Bonus: Share a photo of your furry friend!"</div>
+            </div>
+        </div>
+
+        <div id="week4" class="week-content">
+            <div class="day-card">
+                <span class="day-number">DAY 22-24</span>
+                <h4>Human Anatomy Projection</h4>
+                <div class="prompt">"Today was the big one — projecting into human anatomy. What was this experience like? What did you perceive? Any surprises?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 25-27</span>
+                <h4>Case Working</h4>
+                <div class="prompt">"The more you do case working, the more you'll trust what comes through. What have you learned about your own intuitive style — visual, feelings, words, or knowing?"</div>
+            </div>
+            <div class="day-card">
+                <span class="day-number">DAY 28</span>
+                <h4>Graduation Day!</h4>
+                <div class="prompt">"DAY 28 — YOU DID IT!!! Looking back at Day 1 you vs. Day 28 you — what's different? What's possible now that wasn't before? Share your transformation story. We want to celebrate every single one of you! 🎉"</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scaling Section -->
+    <section id="scaling">
+        <h2>Multi-Quest Architecture</h2>
+        <p>Eliza is designed to run across ALL Mindvalley quest communities, adapting to each quest's content and activity level.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon">🎭</div>
+                <h4>One Personality</h4>
+                <p>Eliza's supportive, empowering, celebrating personality stays consistent across all quests.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📚</div>
+                <h4>Multiple Knowledge Bases</h4>
+                <p>Each quest has its own curriculum content that Eliza learns and references.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h4>Adaptive Engagement</h4>
+                <p>Eliza adjusts her activity level based on how active each community is.</p>
+            </div>
+        </div>
+
+        <h3>Adaptive Engagement Logic</h3>
+        <table>
+            <tr>
+                <th>Community Activity</th>
+                <th>Eliza's Behavior</th>
+            </tr>
+            <tr>
+                <td><strong>High Activity</strong><br>(Many daily posts)</td>
+                <td>Focuses on responding & connecting members. Lighter on daily prompts since the community generates its own content.</td>
+            </tr>
+            <tr>
+                <td><strong>Medium Activity</strong></td>
+                <td>Daily prompts + responds to posts + weekly leaderboard recognition.</td>
+            </tr>
+            <tr>
+                <td><strong>Low Activity</strong><br>(Quieter community)</td>
+                <td>More proactive: extra prompts, direct nudges to quiet members, works harder to spark discussion.</td>
+            </tr>
+        </table>
+
+        <h3>Onboarding a New Quest</h3>
+        <p>For each quest, the team provides:</p>
+        <ul class="feature-list">
+            <li>
+                <span class="feature-check">1</span>
+                <div><strong>Curriculum Transcript</strong> — Full text of all lessons and exercises</div>
+            </li>
+            <li>
+                <span class="feature-check">2</span>
+                <div><strong>Lesson Schedule</strong> — Which lesson unlocks on which day</div>
+            </li>
+            <li>
+                <span class="feature-check">3</span>
+                <div><strong>Key Concepts</strong> — Important terms and techniques specific to the quest</div>
+            </li>
+        </ul>
+        <p style="margin-top: 16px;">From there, Eliza can auto-generate daily engagement prompts or the team can customize them.</p>
+    </section>
+
+    <!-- Technical Section -->
+    <section id="technical">
+        <h2>Technical Implementation</h2>
+
+        <p>Three options depending on your Circle.so plan and customization needs:</p>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h4>Option A</h4>
+                <div class="price">Native AI Agents</div>
+                <ul>
+                    <li>Built into Circle.so</li>
+                    <li>Enterprise/Plus plan required</li>
+                    <li>Easy dashboard configuration</li>
+                    <li>No external tools needed</li>
+                    <li>Limited customization</li>
+                </ul>
+            </div>
+            <div class="pricing-card recommended">
+                <h4>Option B</h4>
+                <div class="price">Custom Build</div>
+                <ul>
+                    <li>Make.com + Circle API</li>
+                    <li>OpenAI or Claude for AI</li>
+                    <li>Full customization</li>
+                    <li>Advanced analytics</li>
+                    <li>Works with any Circle plan</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <h4>Option C</h4>
+                <div class="price">Hybrid</div>
+                <ul>
+                    <li>Native AI for Q&A</li>
+                    <li>Make.com for scheduling</li>
+                    <li>Custom logic for matching</li>
+                    <li>Best of both worlds</li>
+                    <li>Moderate complexity</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Custom Build Architecture</h3>
+        <div class="highlight-box">
+            <p style="font-family: monospace; font-size: 0.9rem;">
+                Circle.so ←→ Make.com ←→ AI (Claude/GPT)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Knowledge Base<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Quest Curriculum)
+            </p>
+        </div>
+
+        <h3>Estimated Costs (Monthly)</h3>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Cost</th>
+            </tr>
+            <tr>
+                <td>Circle Enterprise (if upgrading)</td>
+                <td>$500-1,000</td>
+            </tr>
+            <tr>
+                <td>Make.com operations</td>
+                <td>$50-200</td>
+            </tr>
+            <tr>
+                <td>AI API usage (Claude or GPT)</td>
+                <td>$50-200</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>$600-1,400/mo</strong></td>
+            </tr>
+        </table>
+        <p><em>Costs vary based on community activity volume and number of quests.</em></p>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline">
+        <h2>Implementation Timeline</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>Phase 1: Foundation (Week 1-2)</h4>
+                <p>Finalize Eliza personality guide. Set up knowledge base with first quest curriculum. Configure basic response capability. Test with small pilot group.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>Phase 2: Daily Engagement (Week 3-4)</h4>
+                <p>Implement daily post scheduling. Create all 28 days of engagement prompts. Test automation workflows. Refine based on pilot feedback.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>Phase 3: Advanced Features (Week 5-6)</h4>
+                <p>Implement leaderboard system. Add member connection matching. Set up accountability nudges. Full community rollout for first quest.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>Phase 4: Scale to All Quests (Ongoing)</h4>
+                <p>Onboard additional quest curricula. Monitor engagement metrics. Optimize based on data. Expand to all Mindvalley quests.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Metrics -->
+    <section>
+        <h2>Success Metrics</h2>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+            </tr>
+            <tr>
+                <td>Quest completion rate</td>
+                <td>+25% increase</td>
+            </tr>
+            <tr>
+                <td>Daily active members</td>
+                <td>+30% increase</td>
+            </tr>
+            <tr>
+                <td>Posts per member</td>
+                <td>+40% increase</td>
+            </tr>
+            <tr>
+                <td>Response time to questions</td>
+                <td>&lt; 1 hour</td>
+            </tr>
+            <tr>
+                <td>Member satisfaction</td>
+                <td>4.5+ / 5 stars</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta">
+        <h2>Ready to Bring Eliza to Life?</h2>
+        <p>Let's create a community experience that transforms how Mindvalley members connect, learn, and grow together.</p>
+        <a href="#" class="btn">Let's Build This</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>Eliza Community Bot Proposal v1.0 — Prepared for Mindvalley</p>
+</footer>
+
+<script>
+    // Week tabs functionality
+    function showWeek(weekId) {
+        // Hide all week content
+        document.querySelectorAll('.week-content').forEach(el => {
+            el.classList.remove('active');
+        });
+        // Remove active from all buttons
+        document.querySelectorAll('.week-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+        // Show selected week
+        document.getElementById(weekId).classList.add('active');
+        // Add active to clicked button
+        event.target.classList.add('active');
+    }
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('.nav a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Accordion functionality (if needed)
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', function() {
+            this.parentElement.classList.toggle('open');
+        });
+    });
+</script>
+
+</body>
+</html>
